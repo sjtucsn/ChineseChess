@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router, Route } from 'dva/router';
-import Hello from './routes/hello';
+import ChessBoard from './routes/Chessboard';
 
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
-      <Route path="/" component={Hello} />
+      <Route path="/" component={ChessBoard} />
     </Router>
   );
 }
