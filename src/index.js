@@ -1,9 +1,9 @@
 import dva from 'dva';
-import { browserHistory } from 'dva/router'
+import { browserHistory } from 'dva/router';
 import './index.css';
 
 // 1. Initialize
-const app = dva({history: browserHistory});
+const app = dva({ history: browserHistory });
 
 // 2. Plugins
 // app.use({});
