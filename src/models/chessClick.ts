@@ -2,7 +2,24 @@ import * as Redux from 'redux'
 import {createAction, Action} from 'redux-actions'
 import {PREFIX, gameState} from './index'
 import {ChessProps, spacexy, chessSize} from '../components/chess/Chess'
+import {nextPace} from './chessInfo'
 
+//判断着点是否在象棋规则范围之内
+function checkNextPace(i:number, j:number, oldi:number, oldj:number, chess:ChessProps, board:string[][]) {
+  let pace:number[][] = nextPace[chess.type](oldj, oldi, board, chess.side)
+  pace = pace.filter(item=>{
+    if (item[0]==j && item[1]==i) {
+      return true
+    } else {
+      return false
+    }
+  })
+  if (pace.length == 1) {
+    return true
+  } else {
+    return false
+  }
+}
 
 //响应棋子点击事件
 export function chessClickAction(chess: ChessProps) { 
@@ -11,13 +28,15 @@ export function chessClickAction(chess: ChessProps) {
 
 export function chessClick(state:gameState, action:Action<ChessProps>) {
   const newState = {...state}
-  if (state.click) {
-    const i = action.payload.position[0]
+  if (state.click) {  //已经存在正在操控的棋子
+    const i = action.payload.position[0]  //将要吃的棋子的位置
     const j = action.payload.position[1]
-    const oldi = state.click.position[0]
+    const oldi = state.click.position[0]  //正在操控的棋子的位置
     const oldj = state.click.position[1]
-    delete newState.board[oldi][oldj]
-    newState.board[i][j] = state.click.name
+    if (checkNextPace(i, j, oldi, oldj, state.click, newState.board)) {
+      delete newState.board[oldi][oldj]  //更新棋盘
+      newState.board[i][j] = state.click.name
+    }
     newState.click = null
   } else {
     newState.click = action.payload
@@ -33,14 +52,16 @@ export function boardClickAction(e: React.MouseEvent<HTMLDivElement>) {
 
 export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLDivElement>>) {
   const newState = {...state}
-  if (state.click) {
+  if (state.click) {  //已经存在正在操控的棋子
     const e = action.payload
-    const j = Math.round((e.clientX - e.currentTarget.offsetLeft - chessSize/2)/spacexy)
-    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2)/spacexy)
-    const oldi = state.click.position[0]
+    const j = Math.round((e.clientX - e.currentTarget.offsetLeft - chessSize/2 + 5)/spacexy)  //获取点击棋盘位置
+    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 5)/spacexy)
+    const oldi = state.click.position[0]  //正在操控的棋子的位置
     const oldj = state.click.position[1]
-    delete newState.board[oldi][oldj]
-    newState.board[i][j] = state.click.name
+    if (checkNextPace(i, j, oldi, oldj, state.click, newState.board)) {
+      delete newState.board[oldi][oldj]  //更新棋盘
+      newState.board[i][j] = state.click.name
+    }
     newState.click = null
   } else {
     newState.click = null
