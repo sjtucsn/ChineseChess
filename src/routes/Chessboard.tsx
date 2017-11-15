@@ -12,6 +12,7 @@ type ChessBoardProps = gameState
 declare function require(url:string)
 const bg = require('../assets/style/bg.png')
 
+//棋盘组件
 class ChessBoard extends React.Component<ChessBoardProps, any> {
 
   render() {

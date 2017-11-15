@@ -5,8 +5,8 @@ import {chessClick, boardClick} from './chessClick'
 export const PREFIX = 'chess'
 
 export interface gameState {
-  click: ChessProps
-  board: string[][]
+  click: ChessProps  //目前点击的棋子
+  board: string[][]  //当前棋盘状态
   dispatch: Redux.Dispatch<any>
 }
 

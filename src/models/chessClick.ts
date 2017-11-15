@@ -3,7 +3,9 @@ import {createAction, Action} from 'redux-actions'
 import {PREFIX, gameState} from './index'
 import {ChessProps, spacexy, chessSize} from '../components/chess/Chess'
 
-export function chessClickAction(chess: ChessProps) {
+
+//响应棋子点击事件
+export function chessClickAction(chess: ChessProps) { 
   return createAction<ChessProps>(`${PREFIX}/chessClick`)(chess)
 }
 
@@ -23,6 +25,8 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
   return newState
 }
 
+
+//响应棋盘点击事件
 export function boardClickAction(e: React.MouseEvent<HTMLDivElement>) {
   return createAction<React.MouseEvent<HTMLDivElement>>(`${PREFIX}/boardClick`)(e)
 }
