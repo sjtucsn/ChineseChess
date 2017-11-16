@@ -5,8 +5,8 @@ import {ChessProps, spacexy, chessSize} from '../components/chess/Chess'
 import {nextPace} from './chessInfo'
 
 //判断着点是否在象棋规则范围之内
-function checkNextPace(i:number, j:number, oldi:number, oldj:number, chess:ChessProps, board:string[][]) {
-  let pace:number[][] = nextPace[chess.type](oldj, oldi, board, chess.side)
+function checkNextPace(i:number, j:number, newState:gameState) {
+  let pace = newState.nextPace
   pace = pace.filter(item=>{
     if (item[0]==j && item[1]==i) {
       return true
@@ -33,13 +33,20 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
     const j = action.payload.position[1]
     const oldi = state.click.position[0]  //正在操控的棋子的位置
     const oldj = state.click.position[1]
-    if (checkNextPace(i, j, oldi, oldj, state.click, newState.board)) {
+    if (checkNextPace(i, j, newState)) {
       delete newState.board[oldi][oldj]  //更新棋盘
       newState.board[i][j] = state.click.name
+      newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
     }
+    newState.nextPace = null
     newState.click = null
   } else {
+    const chess = action.payload
+    const i = chess.position[0]  //点击的棋子的位置
+    const j = chess.position[1]
     newState.click = action.payload
+    newState.nextPace = nextPace[chess.type](j, i, newState.board, chess.side) //记录该棋子可走的全部位置
+    newState.chessChange = null
   }
   return newState
 }
@@ -58,13 +65,16 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
     const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 5)/spacexy)
     const oldi = state.click.position[0]  //正在操控的棋子的位置
     const oldj = state.click.position[1]
-    if (checkNextPace(i, j, oldi, oldj, state.click, newState.board)) {
+    if (checkNextPace(i, j, newState)) {
       delete newState.board[oldi][oldj]  //更新棋盘
       newState.board[i][j] = state.click.name
+      newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
     }
+    newState.nextPace = null
     newState.click = null
   } else {
     newState.click = null
+    newState.chessChange = null
   }
   return newState
 }

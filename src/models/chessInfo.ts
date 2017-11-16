@@ -18,7 +18,7 @@ export const initBoard = [
 export const nextPace = {
 	//车
 	c(x:number, y:number, board:string[][], side:number){
-		let d:number[][] = [];
+		let d:Array<[number,number]> = [];;
 		//左侧检索
 		for (let i=x-1; i>= 0; i--){
 			if (board[y][i]) {
@@ -59,7 +59,7 @@ export const nextPace = {
 	},
 	//马
 	m(x:number, y:number, board:string[][], side:number){
-		let d:number[][] = [];
+		let d:Array<[number,number]> = [];;
 		//1点
 		if ( y-2>= 0 && x+1<= 8 && !board[y-1][x] &&(!board[y-2][x+1] || (board[y-2][x+1][0]>='a'?1:-1) != side)) d.push([x+1,y-2]);
 		//2点
@@ -80,7 +80,7 @@ export const nextPace = {
 	},
 	//相
 	x(x:number, y:number, board:string[][], side:number){
-		let d:number[][] = [];
+		let d:Array<[number,number]> = [];;
 		if (side == 1){ //红方
 			//4点半
 			if ( y+2<= 9 && x+2<= 8 && !board[y+1][x+1] && (!board[y+2][x+2] || board[y+2][x+2][0]<'a')) d.push([x+2,y+2]);
@@ -104,7 +104,7 @@ export const nextPace = {
 	},
 	//士
 	s(x:number, y:number, board:string[][], side:number){
-		let d:number[][] = [];
+		let d:Array<[number,number]> = [];;
 		if (side == 1){ //红方
 			//4点半
 			if ( y+1<= 9 && x+1<= 5 && (!board[y+1][x+1] || board[y+1][x+1][0]<'a')) d.push([x+1,y+1]);
@@ -128,7 +128,7 @@ export const nextPace = {
 	},
 	//将
 	j(x:number, y:number, board:string[][], side:number) {
-		let d:number[][] = []
+		let d:Array<[number,number]> = [];
 		//判断是否有对将的情况发生
 		let isNull = (side: number) => {
 			if (side == 1) {
@@ -179,7 +179,7 @@ export const nextPace = {
 	},
 	//炮
 	p(x:number, y:number, board:string[][], side:number) {
-		let d:number[][] = [];
+		let d:Array<[number,number]> = [];;
 		//左侧检索
 		let n=0;
 		for (let i=x-1; i>= 0; i--){
@@ -244,7 +244,7 @@ export const nextPace = {
 	},
 	//卒
 	z(x:number, y:number, board:string[][], side:number){
-		let d:number[][] = [];
+		let d:Array<[number,number]> = [];;
 		if (side == 1){ //红方
 			//上
 			if ( y-1>= 0 && (!board[y-1][x] || board[y-1][x][0]<'a')) d.push([x,y-1]);

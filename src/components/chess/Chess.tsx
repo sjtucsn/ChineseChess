@@ -1,6 +1,5 @@
 import * as React from 'react'
 import * as Redux from 'redux'
-import {Button} from 'antd'
 import {style} from 'typestyle'
 
 import {chessClickAction} from '../../models/chessClick'
@@ -14,7 +13,8 @@ export interface ChessProps {
   position: [number, number]  //棋子在棋盘上的位置
 }
 
-interface dispatchProps {
+interface OtherProps {
+  control: ChessProps  //当前操控的棋子
   dispatch: Redux.Dispatch<any>
 }
 
@@ -23,7 +23,7 @@ export const spacexy = 57 //棋子间隔大小
 
 
 //棋子组件
-export default class Chess extends React.Component<ChessProps&dispatchProps, any> {
+export default class Chess extends React.Component<ChessProps&OtherProps, any> {
 
   //根据棋子类型选择背景图片
   chooseBackGround(type: string, side: number) { 
@@ -43,7 +43,8 @@ export default class Chess extends React.Component<ChessProps&dispatchProps, any
       width: chessSize,
       height: chessSize,
       top: -3+this.props.position[0]*spacexy,
-      left: -3+this.props.position[1]*spacexy
+      left: -3+this.props.position[1]*spacexy,
+      opacity: this.props.control && this.props.control.name == this.props.name?0.8:1
     })
     return (
       <div className={ChessStyle} onClick={(e)=>{

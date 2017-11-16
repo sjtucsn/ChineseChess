@@ -4,6 +4,8 @@ import { connect } from 'dva'
 import {style} from 'typestyle'
 
 import Chess from '../components/chess/Chess'
+import Dot from '../components/chess/Dot'
+import Box from '../components/chess/Box'
 import {gameState, PREFIX} from '../models'
 import {boardClickAction} from '../models/chessClick'
 
@@ -31,9 +33,14 @@ class ChessBoard extends React.Component<ChessBoardProps, any> {
                           type={item[0].toLowerCase()} 
                           side={item[0]>='a'?1:-1} 
                           position={[i,j]} 
+                          control={this.props.click}
                           dispatch={this.props.dispatch}/>
           })
         })}
+        {this.props.nextPace&&this.props.nextPace.map((position, index)=>{
+          return <Dot position={position} key={index}/>
+        })}
+        {this.props.chessChange?<Box chessChange={this.props.chessChange}/>:null}
       </div>
     )
   }
