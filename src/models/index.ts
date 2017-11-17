@@ -1,11 +1,13 @@
 import * as Redux from 'redux'
 import {ChessProps} from '../components/chess/Chess'
-import {chessClick, boardClick} from './chessClick'
+import {chessClick, boardClick, AIClick} from './chessClick'
+import {startClick} from './buttonClick'
 import {initBoard} from './chessInfo'
 
 export const PREFIX = 'chess'
 
 export interface gameState {
+  side: number
   click: ChessProps  //目前点击的棋子
   board: string[][]  //当前棋盘状态
   nextPace: Array<[number, number]> //记录当前操控的棋子所有可走的位置
@@ -14,6 +16,7 @@ export interface gameState {
 }
 
 const initState: gameState = {
+  side: 0,
   click: null,
   board: initBoard,
   nextPace: null,
@@ -28,6 +31,8 @@ export default {
   },
   reducers: {
     chessClick,
-    boardClick
+    boardClick,
+    AIClick,
+    startClick
   }
 }

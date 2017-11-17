@@ -37,11 +37,15 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
       delete newState.board[oldi][oldj]  //更新棋盘
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
+      newState.side = -state.side  //换成对方下棋
     }
     newState.nextPace = null
     newState.click = null
   } else {
     const chess = action.payload
+    if (state.side!=chess.side) {  //只能点本方的棋子
+      return newState
+    }
     const i = chess.position[0]  //点击的棋子的位置
     const j = chess.position[1]
     newState.click = action.payload
@@ -62,13 +66,14 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
   if (state.click) {  //已经存在正在操控的棋子
     const e = action.payload
     const j = Math.round((e.clientX - e.currentTarget.offsetLeft - chessSize/2 + 5)/spacexy)  //获取点击棋盘位置
-    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 5)/spacexy)
+    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 20)/spacexy)
     const oldi = state.click.position[0]  //正在操控的棋子的位置
     const oldj = state.click.position[1]
     if (checkNextPace(i, j, newState)) {
       delete newState.board[oldi][oldj]  //更新棋盘
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
+      newState.side = -state.side  //换成对方下棋
     }
     newState.nextPace = null
     newState.click = null
@@ -76,5 +81,25 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
     newState.click = null
     newState.chessChange = null
   }
+  return newState
+}
+
+//响应AI点击事件
+export function AIClickAction(move: number[]) {
+  return createAction<number[]>(`${PREFIX}/AIClick`)(move)
+}
+
+export function AIClick(state:gameState, action:Action<number[]>) {
+  const newState = {...state}
+  const move = action.payload
+  const oldx = move[0] //获取棋子旧位置
+  const oldy = move[1]
+  const x = move[2]  //获取棋子新位置
+  const y = move[3]
+  const key = newState.board[oldy][oldx]  //获取AI要走的棋子
+  delete newState.board[oldy][oldx]  //更新棋盘
+  newState.board[y][x] = key
+  newState.chessChange=[[y,x],[oldy,oldx],state.side]  //记录每一步棋子的变化
+  newState.side = -state.side  //换成对方下棋
   return newState
 }
