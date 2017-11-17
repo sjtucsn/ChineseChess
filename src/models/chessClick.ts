@@ -66,7 +66,7 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
   if (state.click) {  //已经存在正在操控的棋子
     const e = action.payload
     const j = Math.round((e.clientX - e.currentTarget.offsetLeft - chessSize/2 + 5)/spacexy)  //获取点击棋盘位置
-    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 20)/spacexy)
+    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 5)/spacexy)
     const oldi = state.click.position[0]  //正在操控的棋子的位置
     const oldj = state.click.position[1]
     if (checkNextPace(i, j, newState)) {

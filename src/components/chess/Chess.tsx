@@ -14,6 +14,7 @@ export interface ChessProps {
 }
 
 interface OtherProps {
+  color: string  //本方棋子颜色
   control: ChessProps  //当前操控的棋子
   dispatch: Redux.Dispatch<any>
 }
@@ -26,12 +27,12 @@ export const spacexy = 57 //棋子间隔大小
 export default class Chess extends React.Component<ChessProps&OtherProps, any> {
 
   //根据棋子类型选择背景图片
-  chooseBackGround(type: string, side: number) { 
+  chooseBackGround(type: string, side: number, color:string) { 
     let bg: string = null
     if (side == 1) {
-      bg = require(`../../assets/style/r_${type}.png`)
+      bg = require(`../../assets/style/${color=='r'?'r':'b'}_${type}.png`)
     } else {
-      bg = require(`../../assets/style/b_${type}.png`)
+      bg = require(`../../assets/style/${color=='b'?'r':'b'}_${type}.png`)
     }
     return bg
   }
@@ -39,7 +40,7 @@ export default class Chess extends React.Component<ChessProps&OtherProps, any> {
   render() {
     const ChessStyle = style({
       position: 'absolute',
-      backgroundImage: `url(${this.chooseBackGround(this.props.type, this.props.side)})`,
+      backgroundImage: `url(${this.chooseBackGround(this.props.type, this.props.side, this.props.color)})`,
       width: chessSize,
       height: chessSize,
       top: -3+this.props.position[0]*spacexy,
