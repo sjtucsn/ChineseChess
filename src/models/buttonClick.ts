@@ -11,6 +11,8 @@ export function startClickAction() {
 export function startClick(state:gameState, action:Action<null>) {
   const newState = {...state}
   newState.showModel = true
+  newState.winner = null
+  newState.side = 0 
   return newState
 }
 

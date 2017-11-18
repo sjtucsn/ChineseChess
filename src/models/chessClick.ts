@@ -28,6 +28,9 @@ export function chessClickAction(chess: ChessProps) {
 
 export function chessClick(state:gameState, action:Action<ChessProps>) {
   const newState = {...state}
+  if (state.mode==2 || state.mode==1&&state.side==-1) {//防止AI模式下误点棋子
+    return newState
+  }
   if (state.click) {  //已经存在正在操控的棋子
     const i = action.payload.position[0]  //将要吃的棋子的位置
     const j = action.payload.position[1]
@@ -68,6 +71,9 @@ export function boardClickAction(e: React.MouseEvent<HTMLDivElement>) {
 
 export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLDivElement>>) {
   const newState = {...state}
+  if (state.mode==2 || state.mode==1&&state.side==-1) {//防止AI模式下误点棋子
+    return newState
+  }
   if (state.click) {  //已经存在正在操控的棋子
     const e = action.payload
     const j = Math.round((e.clientX - e.currentTarget.offsetLeft - chessSize/2 + 5)/spacexy)  //获取点击棋盘位置

@@ -32,6 +32,7 @@ export default class WinnerModel extends React.Component<WinnerModelProps, any> 
       <Modal
         title={<h2><strong>游戏结果</strong></h2>}
         visible={Math.abs(this.props.winner)==1}
+        cancelText="重新开始"
         onOk={()=>{this.props.dispatch(onGameOverAction())}}
         onCancel={()=>{this.props.dispatch(startClickAction())}}
       >
