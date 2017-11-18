@@ -21,7 +21,7 @@ export default class ButtonGroup extends React.Component<ButtonGroupProps, any> 
     })
     if (this.props.mode == 2) {
       //模式为2代表人机对战，side的绝对值为2代表机机对战的暂停状态
-      return <Button size='large' onClick={()=>{this.props.dispatch(toggleAIAction())}} className={ButtonStyle}>{Math.abs(this.props.side)==2?'恢复':'暂停'}</Button>
+      return <Button size='large' onClick={()=>{this.props.dispatch(toggleAIAction())}} className={ButtonStyle} disabled={(this.props.side==0)}>{Math.abs(this.props.side)==2?'恢复':'暂停'}</Button>
     } else {
       return <Button size='large' className={ButtonStyle} disabled={this.props.side==0}>悔棋</Button>
     }

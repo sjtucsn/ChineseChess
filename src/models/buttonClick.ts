@@ -67,6 +67,18 @@ export function toggleAI(state:gameState, action:Action<null>) {
   return newState
 }
 
+//响应游戏结束事件
+export function onGameOverAction() { 
+  return createAction(`${PREFIX}/onGameOver`)()
+}
+
+export function onGameOver(state:gameState, action:Action<null>) {
+  const newState = {...state}
+  newState.winner = null
+  newState.side = 0 
+  return newState
+}
+
 //响应对局时换边事件
 export function changeSideAction() { 
   return createAction(`${PREFIX}/changeSide`)()

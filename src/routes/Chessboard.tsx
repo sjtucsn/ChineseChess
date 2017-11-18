@@ -8,6 +8,7 @@ import Dot from '../components/chess/Dot'
 import Box from '../components/chess/Box'
 import AI from '../components/AI/AI'
 import ButtonGroup from '../components/button/ButtonGroup'
+import WinnerModel from '../components/button/winnerModel'
 import {gameState, PREFIX} from '../models'
 import {boardClickAction} from '../models/chessClick'
 import {startClickAction} from '../models/buttonClick'
@@ -69,6 +70,7 @@ class ChessBoard extends React.Component<ChessBoardProps, any> {
         <div className={buttonGropupStyle}>
           <ButtonGroup mode={this.props.mode} side={this.props.side} showModel={this.props.showModel} dispatch={this.props.dispatch} />
         </div>
+        <WinnerModel mode={this.props.mode} color={this.props.color} winner={this.props.winner} dispatch={this.props.dispatch} />
       </div>
     )
   }

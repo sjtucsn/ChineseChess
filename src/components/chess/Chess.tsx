@@ -45,7 +45,8 @@ export default class Chess extends React.Component<ChessProps&OtherProps, any> {
       height: chessSize,
       top: -3+this.props.position[0]*spacexy,
       left: -3+this.props.position[1]*spacexy,
-      opacity: this.props.control && this.props.control.name == this.props.name?0.8:1
+      opacity: this.props.control && this.props.control.name == this.props.name?0.8:1,
+      zIndex: 1 //设置点击事件的冒泡顺序
     })
     return (
       <div className={ChessStyle} onClick={(e)=>{

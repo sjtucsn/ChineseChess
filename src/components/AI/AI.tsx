@@ -156,25 +156,19 @@ export default class AI extends React.Component<AIProps, any> {
       case 1: if (this.props.side == -1) {
                 setTimeout(()=>{
                   let result = this.init(this.props.treeDepth)
-                  if (result){
-                    this.props.dispatch(AIClickAction(result))
-                  }
+                  this.props.dispatch(AIClickAction(result))
                 }, 500)
               } 
               break
       case 2: if (this.props.side == -1) {
                 setTimeout(()=>{
                   let result = this.init(this.props.treeDepth)
-                  if (result){
-                    this.props.dispatch(AIClickAction(result))
-                  }
+                  this.props.dispatch(AIClickAction(result))
                 }, 500)
               } else if (this.props.side == 1) {
                 setTimeout(()=>{
                   let result = this.init(this.props.treeDepth)
-                  if (result){
-                    this.props.dispatch(AIClickAction(result))
-                  }
+                  this.props.dispatch(AIClickAction(result))
                 }, 500)
               }
               break

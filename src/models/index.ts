@@ -1,7 +1,7 @@
 import * as Redux from 'redux'
 import {ChessProps} from '../components/chess/Chess'
 import {chessClick, boardClick, AIClick} from './chessClick'
-import {startClick, changeSide, onModelOK, onModelCancel, toggleAI} from './buttonClick'
+import {startClick, changeSide, onModelOK, onModelCancel, toggleAI, onGameOver} from './buttonClick'
 
 export const PREFIX = 'chess'
 
@@ -15,6 +15,7 @@ export interface gameState {
   showModel: boolean //点击开始游戏时显示的静态对话框
   mode: number //游戏模式，1为人机对战，2为机机对战，3为人人对战
   difficulty: number //游戏难度，即AI水平
+  winner: number //胜者，1代表玩家胜，－1代表电脑胜
   dispatch: Redux.Dispatch<any>
 }
 
@@ -28,6 +29,7 @@ const initState: gameState = {
   showModel: false,
   mode: 1,
   difficulty: 2,
+  winner: null,
   dispatch: null
 }
 
@@ -45,5 +47,6 @@ export default {
     onModelOK,
     onModelCancel,
     toggleAI, //机机对弈时的暂停对弈与恢复对弈功能
+    onGameOver,
   }
 }
