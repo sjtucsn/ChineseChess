@@ -64,10 +64,10 @@ class ChessBoard extends React.Component<ChessBoardProps, any> {
             return <Dot position={position} key={index}/>
           })}
           {this.props.chessChange?<Box chessChange={this.props.chessChange} color={this.props.color}/>:null}
-          <AI treeDepth={4} board={this.props.board} dispatch={this.props.dispatch} side={this.props.side}/>
+          <AI treeDepth={this.props.difficulty} mode={this.props.mode} board={this.props.board} dispatch={this.props.dispatch} side={this.props.side}/>
         </div>
         <div className={buttonGropupStyle}>
-          <ButtonGroup dispatch={this.props.dispatch} />
+          <ButtonGroup showModel={this.props.showModel} dispatch={this.props.dispatch} />
         </div>
       </div>
     )

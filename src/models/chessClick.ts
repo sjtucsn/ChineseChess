@@ -38,6 +38,7 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
       newState.side = -state.side  //换成对方下棋
+      newState.chessChange = null
     }
     newState.nextPace = null
     newState.click = null
@@ -50,7 +51,6 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
     const j = chess.position[1]
     newState.click = action.payload
     newState.nextPace = nextPace[chess.type](j, i, newState.board, chess.side) //记录该棋子可走的全部位置
-    newState.chessChange = null
   }
   return newState
 }
@@ -74,12 +74,12 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
       newState.side = -state.side  //换成对方下棋
+      newState.chessChange = null
     }
     newState.nextPace = null
     newState.click = null
   } else {
     newState.click = null
-    newState.chessChange = null
   }
   return newState
 }

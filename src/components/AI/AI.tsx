@@ -9,6 +9,7 @@ interface AIProps {
   board: string[][]  //棋盘
   side: number  //阵营
   dispatch: Redux.Dispatch<any>
+  mode: number //游戏模式
 }
 
 //用于点击棋子时提示可走位置的点组件
@@ -151,13 +152,34 @@ export default class AI extends React.Component<AIProps, any> {
   }
 
   componentDidUpdate() {
-    if (this.props.side == -1) {
-      setTimeout(()=>{
-        let result = this.init(this.props.treeDepth)
-        if (result){
-          this.props.dispatch(AIClickAction(result))
-        }
-      }, 500)
+    switch (this.props.mode) { //根据游戏模式判断AI是否工作
+      case 1: if (this.props.side == -1) {
+                setTimeout(()=>{
+                  let result = this.init(this.props.treeDepth)
+                  if (result){
+                    this.props.dispatch(AIClickAction(result))
+                  }
+                }, 500)
+              } 
+              break
+      case 2: if (this.props.side == -1) {
+                setTimeout(()=>{
+                  let result = this.init(this.props.treeDepth)
+                  if (result){
+                    this.props.dispatch(AIClickAction(result))
+                  }
+                }, 500)
+              } else if (this.props.side == 1) {
+                setTimeout(()=>{
+                  let result = this.init(this.props.treeDepth)
+                  if (result){
+                    this.props.dispatch(AIClickAction(result))
+                  }
+                }, 500)
+              }
+              break
+      case 3: break
+      default: break
     }
   }
 }

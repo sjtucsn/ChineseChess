@@ -1,15 +1,58 @@
 import * as Redux from 'redux'
 import {createAction, Action} from 'redux-actions'
 import {PREFIX, gameState} from './index'
+import {gameOptions} from '../components/button/StartModel'
+import {initBoard} from './chessInfo'
 
-//响应游戏开始事件
+//响应点击游戏开始按钮事件
 export function startClickAction() { 
   return createAction(`${PREFIX}/startClick`)()
 }
 
 export function startClick(state:gameState, action:Action<null>) {
   const newState = {...state}
-  newState.side = -1
+  newState.showModel = true
+  return newState
+}
+
+//响应点击模态对话框确认按钮事件
+export function onModelOKAction(options:gameOptions) { 
+  return createAction<gameOptions>(`${PREFIX}/onModelOK`)(options)
+}
+
+export function onModelOK(state:gameState, action:Action<gameOptions>) {
+  const newState = {...state}
+  const payload = action.payload
+  newState.side = state.color=='r'?payload.side:0-payload.side
+  newState.difficulty = payload.difficulty
+  newState.mode = payload.mode
+  newState.board = [ //初使化棋盘，游戏重新开始
+    ['C0','M0','X0','S0','J0','S1','X1','M1','C1'],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    [    ,'P0',    ,    ,    ,    ,    ,'P1',    ],
+    ['Z0',    ,'Z1',    ,'Z2',    ,'Z3',    ,'Z4'],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    ['z0',    ,'z1',    ,'z2',    ,'z3',    ,'z4'],
+    [    ,'p0',    ,    ,    ,    ,    ,'p1',    ],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    ['c0','m0','x0','s0','j0','s1','x1','m1','c1']
+  ]
+  newState.click = null
+  newState.nextPace = null
+  newState.chessChange = null
+  newState.showModel = false
+  return newState
+}
+
+//响应点击模态对话框取消按钮事件
+export function onModelCancelAction() { 
+  return createAction(`${PREFIX}/onModelCancel`)()
+}
+
+export function onModelCancel(state:gameState, action:Action<null>) {
+  const newState = {...state}
+  newState.showModel = false
   return newState
 }
 

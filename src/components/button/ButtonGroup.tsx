@@ -3,8 +3,10 @@ import * as Redux from 'redux'
 import {Button} from 'antd'
 import {style} from 'typestyle'
 import {startClickAction, changeSideAction} from '../../models/buttonClick'
+import StartModel from './StartModel'
 
 interface ButtonGroupProps {
+  showModel: boolean  //是否显示模态对话框
   dispatch: Redux.Dispatch<any>
 }
 
@@ -16,12 +18,15 @@ export default class ButtonGroup extends React.Component<ButtonGroupProps, any> 
       margin: '0 15px'
     })
     return (
-      <div style={{height:'100%', width:'100%'}}>
-        <Button type='primary' size='large' className={ButtonStyle} onClick={()=>{this.props.dispatch(startClickAction())}}>开始游戏</Button>
-        <Button size='large' className={ButtonStyle}>提示</Button>
-        <Button size='large' className={ButtonStyle}>悔棋</Button>
-        <Button size='large' className={ButtonStyle} onClick={()=>{this.props.dispatch(changeSideAction())}}>换边</Button>
-        <Button size='large' className={ButtonStyle}>让子</Button>
+      <div>
+        <div style={{height:'100%', width:'100%'}}>
+          <Button type='primary' size='large' className={ButtonStyle} onClick={()=>{this.props.dispatch(startClickAction())}}>开始游戏</Button>
+          <Button size='large' className={ButtonStyle}>提示</Button>
+          <Button size='large' className={ButtonStyle}>悔棋</Button>
+          <Button size='large' className={ButtonStyle} onClick={()=>{this.props.dispatch(changeSideAction())}}>换边</Button>
+          <Button size='large' className={ButtonStyle}>让子</Button>
+        </div>
+        <StartModel visible={this.props.showModel} dispatch={this.props.dispatch} />
       </div>
     )
   }
