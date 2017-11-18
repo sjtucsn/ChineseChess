@@ -2,16 +2,30 @@ import * as React from 'react'
 import * as Redux from 'redux'
 import {Button} from 'antd'
 import {style} from 'typestyle'
-import {startClickAction, changeSideAction} from '../../models/buttonClick'
+import {startClickAction, changeSideAction, toggleAIAction} from '../../models/buttonClick'
 import StartModel from './StartModel'
 
 interface ButtonGroupProps {
+  mode: number //游戏模式
+  side: number //当前下棋一方
   showModel: boolean  //是否显示模态对话框
   dispatch: Redux.Dispatch<any>
 }
 
 //与游戏相关的按钮组件
 export default class ButtonGroup extends React.Component<ButtonGroupProps, any> {
+
+  renderThirdButton() {
+    const ButtonStyle = style({
+      margin: '0 15px'
+    })
+    if (this.props.mode == 2) {
+      //模式为2代表人机对战，side的绝对值为2代表机机对战的暂停状态
+      return <Button size='large' onClick={()=>{this.props.dispatch(toggleAIAction())}} className={ButtonStyle}>{Math.abs(this.props.side)==2?'恢复':'暂停'}</Button>
+    } else {
+      return <Button size='large' className={ButtonStyle} disabled={this.props.side==0}>悔棋</Button>
+    }
+  }
 
   render() {
     const ButtonStyle = style({
@@ -20,11 +34,11 @@ export default class ButtonGroup extends React.Component<ButtonGroupProps, any> 
     return (
       <div>
         <div style={{height:'100%', width:'100%'}}>
-          <Button type='primary' size='large' className={ButtonStyle} onClick={()=>{this.props.dispatch(startClickAction())}}>开始游戏</Button>
-          <Button size='large' className={ButtonStyle}>提示</Button>
-          <Button size='large' className={ButtonStyle}>悔棋</Button>
-          <Button size='large' className={ButtonStyle} onClick={()=>{this.props.dispatch(changeSideAction())}}>换边</Button>
-          <Button size='large' className={ButtonStyle}>让子</Button>
+          <Button type='primary' size='large' className={ButtonStyle} disabled={(this.props.mode==2)&&(Math.abs(this.props.side)==1)} onClick={()=>{this.props.dispatch(startClickAction())}}>开始游戏</Button>
+          <Button size='large' className={ButtonStyle} disabled={(this.props.mode==2)||(this.props.side==0)}>提示</Button>
+          {this.renderThirdButton()}
+          <Button size='large' className={ButtonStyle} disabled={(this.props.side==0)||(this.props.mode==2)&&(Math.abs(this.props.side)==1)} onClick={()=>{this.props.dispatch(changeSideAction())}}>换边</Button>
+          <Button size='large' className={ButtonStyle} disabled={(this.props.side==0)||(this.props.mode==2)&&(Math.abs(this.props.side)==1)}>让子</Button>
         </div>
         <StartModel visible={this.props.showModel} dispatch={this.props.dispatch} />
       </div>

@@ -2,7 +2,6 @@ import * as Redux from 'redux'
 import {createAction, Action} from 'redux-actions'
 import {PREFIX, gameState} from './index'
 import {gameOptions} from '../components/button/StartModel'
-import {initBoard} from './chessInfo'
 
 //响应点击游戏开始按钮事件
 export function startClickAction() { 
@@ -23,9 +22,10 @@ export function onModelOKAction(options:gameOptions) {
 export function onModelOK(state:gameState, action:Action<gameOptions>) {
   const newState = {...state}
   const payload = action.payload
-  newState.side = state.color=='r'?payload.side:0-payload.side
+  newState.side = payload.color=='r'?payload.side:0-payload.side
   newState.difficulty = payload.difficulty
   newState.mode = payload.mode
+  newState.color = payload.color
   newState.board = [ //初使化棋盘，游戏重新开始
     ['C0','M0','X0','S0','J0','S1','X1','M1','C1'],
     [    ,    ,    ,    ,    ,    ,    ,    ,    ],
@@ -53,6 +53,17 @@ export function onModelCancelAction() {
 export function onModelCancel(state:gameState, action:Action<null>) {
   const newState = {...state}
   newState.showModel = false
+  return newState
+}
+
+//机机对弈时响应暂停与恢复按钮事件
+export function toggleAIAction() { 
+  return createAction(`${PREFIX}/toggleAI`)()
+}
+
+export function toggleAI(state:gameState, action:Action<null>) {
+  const newState = {...state}
+  newState.side = Math.abs(state.side)==2?state.side/2:state.side*2
   return newState
 }
 

@@ -92,6 +92,9 @@ export function AIClickAction(move: number[]) {
 export function AIClick(state:gameState, action:Action<number[]>) {
   const newState = {...state}
   const move = action.payload
+  if (move[0]===undefined) { //当机机对弈暂停时需要注意的问题，防止下一步棋为空
+    return newState
+  }
   const oldx = move[0] //获取棋子旧位置
   const oldy = move[1]
   const x = move[2]  //获取棋子新位置
