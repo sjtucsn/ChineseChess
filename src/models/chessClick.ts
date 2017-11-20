@@ -46,7 +46,6 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
       newState.side = -state.side  //换成对方下棋
-      newState.chessChange = null
     }
     newState.nextPace = null
     newState.click = null
@@ -82,10 +81,14 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
     const oldj = state.click.position[1]
     if (checkNextPace(i, j, newState)) {
       delete newState.board[oldi][oldj]  //更新棋盘
+      if (state.board[i][j]=='J0') { //游戏胜负判断
+        newState.winner = 1
+      } else if (state.board[i][j]=='j0') {
+        newState.winner = -1
+      }
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
       newState.side = -state.side  //换成对方下棋
-      newState.chessChange = null
     }
     newState.nextPace = null
     newState.click = null

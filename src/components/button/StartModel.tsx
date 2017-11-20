@@ -35,7 +35,7 @@ export default class StartModel extends React.Component<StartModelProps, any> {
     setTimeout(()=>{
       this.setState({confirmLoading:false})
       this.props.dispatch(onModelOKAction(this.options))
-    },3000)
+    },1000)
   }
 
   render() {

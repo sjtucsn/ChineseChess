@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as Redux from 'redux'
-import {Modal} from 'antd'
+import {Modal, Button} from 'antd'
 import {startClickAction, onGameOverAction} from '../../models/buttonClick'
 
 interface WinnerModelProps {
@@ -32,9 +32,13 @@ export default class WinnerModel extends React.Component<WinnerModelProps, any> 
       <Modal
         title={<h2><strong>游戏结果</strong></h2>}
         visible={Math.abs(this.props.winner)==1}
-        cancelText="重新开始"
-        onOk={()=>{this.props.dispatch(onGameOverAction())}}
-        onCancel={()=>{this.props.dispatch(startClickAction())}}
+        onCancel={()=>{this.props.dispatch(onGameOverAction())}}
+        footer={[
+          <Button size="large" onClick={()=>{this.props.dispatch(startClickAction())}}>重新开始</Button>,
+          <Button type="primary" size="large" onClick={()=>{this.props.dispatch(onGameOverAction())}}>
+            确定
+          </Button>,
+        ]}
       >
         {this.renderText()}
       </Modal>
