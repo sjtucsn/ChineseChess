@@ -34,8 +34,8 @@ export default class WinnerModel extends React.Component<WinnerModelProps, any> 
         visible={Math.abs(this.props.winner)==1}
         onCancel={()=>{this.props.dispatch(onGameOverAction())}}
         footer={[
-          <Button size="large" onClick={()=>{this.props.dispatch(startClickAction())}}>重新开始</Button>,
-          <Button type="primary" size="large" onClick={()=>{this.props.dispatch(onGameOverAction())}}>
+          <Button key='1' size="large" onClick={()=>{this.props.dispatch(startClickAction())}}>重新开始</Button>,
+          <Button key='2' type="primary" size="large" onClick={()=>{this.props.dispatch(onGameOverAction())}}>
             确定
           </Button>,
         ]}

@@ -1,5 +1,6 @@
 import * as Redux from 'redux'
 import {createAction, Action} from 'redux-actions'
+import {message} from 'antd'
 import {PREFIX, gameState} from './index'
 import {ChessProps, spacexy, chessSize} from '../components/chess/Chess'
 import {nextPace} from './chessInfo'
@@ -29,6 +30,24 @@ export function chessClickAction(chess: ChessProps) {
 export function chessClick(state:gameState, action:Action<ChessProps>) {
   const newState = {...state}
   if (state.mode==2 || state.mode==1&&state.side==-1) {//防止AI模式下误点棋子
+    return newState
+  }
+  //响应让子操作
+  if (newState.clearChessMode) {
+    newState.clearChessMode = false
+    newState.click = null
+    newState.nextPace = null
+    newState.chessChange = null
+    const i = action.payload.position[0]  //将要清空的棋子的位置
+    const j = action.payload.position[1]
+    if (!newState.board[i][j]) {
+      return newState
+    }
+    if (newState.board[i][j]=='J0'||newState.board[i][j]=='j0') {
+      message.error('将和帅是不可以让的哦～')
+    } else {
+      delete newState.board[i][j]
+    }
     return newState
   }
   if (state.click) {  //已经存在正在操控的棋子
@@ -71,6 +90,25 @@ export function boardClickAction(e: React.MouseEvent<HTMLDivElement>) {
 export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLDivElement>>) {
   const newState = {...state}
   if (state.mode==2 || state.mode==1&&state.side==-1) {//防止AI模式下误点棋子
+    return newState
+  }
+  //响应让子操作
+  if (newState.clearChessMode) {
+    newState.clearChessMode = false
+    newState.click = null
+    newState.nextPace = null
+    newState.chessChange = null
+    const e = action.payload
+    const j = Math.round((e.clientX - e.currentTarget.offsetLeft - chessSize/2 + 5)/spacexy)  //获取点击棋盘位置
+    const i = Math.round((e.clientY - e.currentTarget.offsetTop - chessSize/2 + 5)/spacexy)
+    if (!newState.board[i][j]) {
+      return newState
+    }
+    if (newState.board[i][j]=='J0'||newState.board[i][j]=='j0') {
+      message.error('将和帅是不可以让的哦～')
+    } else {
+      delete newState.board[i][j]
+    }
     return newState
   }
   if (state.click) {  //已经存在正在操控的棋子

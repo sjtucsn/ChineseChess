@@ -108,3 +108,14 @@ export function changeSide(state:gameState, action:Action<null>) {
   }
   return newState
 }
+
+//响应让子事件
+export function clearChessAction() { 
+  return createAction(`${PREFIX}/clearChess`)()
+}
+
+export function clearChess(state:gameState, action:Action<null>) {
+  const newState = {...state}
+  newState.clearChessMode = true
+  return newState
+}
