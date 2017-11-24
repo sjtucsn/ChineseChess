@@ -119,3 +119,14 @@ export function clearChess(state:gameState, action:Action<null>) {
   newState.clearChessMode = true
   return newState
 }
+
+//响应提示事件
+export function showHintAction() { 
+  return createAction(`${PREFIX}/showHint`)()
+}
+
+export function showHint(state:gameState, action:Action<null>) {
+  const newState = {...state}
+  newState.mode = state.mode*4 //模式为4或者12代表提示事件
+  return newState
+}

@@ -59,12 +59,14 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
       delete newState.board[oldi][oldj]  //更新棋盘
       if (state.board[i][j]=='J0') { //游戏胜负判断
         newState.winner = 1
+        newState.side = 0
       } else if (state.board[i][j]=='j0') {
         newState.winner = -1
+        newState.side = 0
       }
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
-      newState.side = -state.side  //换成对方下棋
+      newState.side = -newState.side  //换成对方下棋
     }
     newState.nextPace = null
     newState.click = null
@@ -121,12 +123,14 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
       delete newState.board[oldi][oldj]  //更新棋盘
       if (state.board[i][j]=='J0') { //游戏胜负判断
         newState.winner = 1
+        newState.side = 0
       } else if (state.board[i][j]=='j0') {
         newState.winner = -1
+        newState.side = 0
       }
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
-      newState.side = -state.side  //换成对方下棋
+      newState.side = -newState.side  //换成对方下棋
     }
     newState.nextPace = null
     newState.click = null
@@ -146,6 +150,7 @@ export function AIClick(state:gameState, action:Action<number[]|boolean>) {
   const move = action.payload
   if (!move) { //电脑无棋可下，则电脑输
     newState.winner = -state.side 
+    newState.side = 0
   }
   if (move[0]===undefined) { //当机机对弈暂停时需要注意的问题，防止下一步棋为空
     return newState
@@ -157,10 +162,14 @@ export function AIClick(state:gameState, action:Action<number[]|boolean>) {
   const key = newState.board[oldy][oldx]  //获取AI要走的棋子
   if (state.board[y][x]=='j0') { //玩家输
     newState.winner = -1
+    newState.side = 0
   }
   delete newState.board[oldy][oldx]  //更新棋盘
   newState.board[y][x] = key
   newState.chessChange=[[y,x],[oldy,oldx],state.side]  //记录每一步棋子的变化
-  newState.side = -state.side  //换成对方下棋
+  newState.side = -newState.side  //换成对方下棋
+  if (state.mode == 4||state.mode == 12) {//若是提示模式时需要回退模式到正常游戏模式
+    newState.mode = state.mode / 4
+  }
   return newState
 }

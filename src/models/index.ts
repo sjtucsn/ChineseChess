@@ -1,7 +1,7 @@
 import * as Redux from 'redux'
 import {ChessProps} from '../components/chess/Chess'
 import {chessClick, boardClick, AIClick} from './chessClick'
-import {startClick, changeSide, onModelOK, onModelCancel, toggleAI, onGameOver, clearChess} from './buttonClick'
+import {startClick, changeSide, onModelOK, onModelCancel, toggleAI, onGameOver, clearChess, showHint} from './buttonClick'
 
 export const PREFIX = 'chess'
 
@@ -50,6 +50,7 @@ export default {
     onModelCancel,
     toggleAI, //机机对弈时的暂停对弈与恢复对弈功能
     onGameOver,
-    clearChess
+    clearChess, //让子模式
+    showHint, //提示模式
   }
 }

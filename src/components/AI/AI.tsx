@@ -153,14 +153,14 @@ export default class AI extends React.Component<AIProps, any> {
 
   componentDidUpdate() {
     switch (this.props.mode) { //根据游戏模式判断AI是否工作
-      case 1: if (this.props.side == -1) {
+      case 1: if (this.props.side == -1) { //人机对战模式
                 setTimeout(()=>{
                   let result = this.init(this.props.treeDepth)
                   this.props.dispatch(AIClickAction(result))
                 }, 500)
               } 
               break
-      case 2: if (this.props.side == -1) {
+      case 2: if (this.props.side == -1) { //机机对战模式
                 setTimeout(()=>{
                   let result = this.init(this.props.treeDepth)
                   this.props.dispatch(AIClickAction(result))
@@ -172,8 +172,19 @@ export default class AI extends React.Component<AIProps, any> {
                 }, 500)
               }
               break
-      case 3: break
-      default: break
+      case 3: break //人人对战模式
+      default: if (this.props.side == -1) { //人机或人人时的提示模式
+                setTimeout(()=>{
+                  let result = this.init(this.props.treeDepth)
+                  this.props.dispatch(AIClickAction(result))
+                }, 500)
+              } else if (this.props.side == 1) {
+                setTimeout(()=>{
+                  let result = this.init(this.props.treeDepth)
+                  this.props.dispatch(AIClickAction(result))
+                }, 500)
+              }
+              break
     }
   }
 }
