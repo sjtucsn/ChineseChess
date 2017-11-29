@@ -46,6 +46,18 @@ export function onModelOK(state:gameState, action:Action<gameOptions>) {
   newState.nextPace = null
   newState.chessChange = null
   newState.showModel = false
+  newState.history = newState.side == 1?[[ 
+    ['C0','M0','X0','S0','J0','S1','X1','M1','C1'],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    [    ,'P0',    ,    ,    ,    ,    ,'P1',    ],
+    ['Z0',    ,'Z1',    ,'Z2',    ,'Z3',    ,'Z4'],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    ['z0',    ,'z1',    ,'z2',    ,'z3',    ,'z4'],
+    [    ,'p0',    ,    ,    ,    ,    ,'p1',    ],
+    [    ,    ,    ,    ,    ,    ,    ,    ,    ],
+    ['c0','m0','x0','s0','j0','s1','x1','m1','c1']
+  ]]:[]
   return newState
 }
 
@@ -94,6 +106,9 @@ export function changeSide(state:gameState, action:Action<null>) {
   //改变棋子名称，注意：人控制的一方永远阵营为1，因此永远是小写字母的棋子，不论棋子颜色
   newState.board = newState.board.map((row)=>{
     return row.map((key)=>{
+      if (!key) {
+        return key
+      }
       let newKey:string[]=[]
       newKey[0] = key[0]>='a'?key[0].toUpperCase():key[0].toLowerCase()
       newKey[1] = key[1]
@@ -102,10 +117,17 @@ export function changeSide(state:gameState, action:Action<null>) {
   })
   newState.color = state.color=='r'?'b':'r'  //本方棋子的颜色
   newState.side = -state.side  //换边后应让对手先行一步棋
+  newState.nextPace = null
+  newState.click = null
   const c = state.chessChange  //处理上一步棋的背景框变化
   if (c) {
     newState.chessChange = [[9-c[0][0], c[0][1]], [9-c[1][0], c[1][1]], -c[2]]
   }
+  if (state.mode == 1) { //换边后禁止悔棋
+    newState.history = []
+  } else if (state.mode == 3) {
+    newState.history = [newState.board.map(row=>[...row])]
+  }  
   return newState
 }
 
@@ -128,5 +150,30 @@ export function showHintAction() {
 export function showHint(state:gameState, action:Action<null>) {
   const newState = {...state}
   newState.mode = state.mode*4 //模式为4或者12代表提示事件
+  return newState
+}
+
+//响应悔棋事件
+export function regretMoveAction() { 
+  return createAction(`${PREFIX}/regretMove`)()
+}
+
+export function regretMove(state:gameState, action:Action<null>) {
+  const newState = {...state}
+  if (newState.history.length == 1) {
+    return newState
+  }
+  if (state.mode == 1) {
+    newState.history.pop()
+    newState.history.pop()
+    newState.board = newState.history[newState.history.length-1].map(row=>[...row])
+  } else if (state.mode == 3) {
+    newState.history.pop()
+    newState.board = newState.history[newState.history.length-1].map(row=>[...row])
+    newState.side = -state.side
+  }
+  newState.click = null
+  newState.nextPace = null
+  newState.chessChange = null
   return newState
 }

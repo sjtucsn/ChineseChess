@@ -67,6 +67,7 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
       newState.side = -newState.side  //换成对方下棋
+      newState.history = [...state.history, newState.board.map(row=>[...row])]
     }
     newState.nextPace = null
     newState.click = null
@@ -131,6 +132,7 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
       newState.board[i][j] = state.click.name
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
       newState.side = -newState.side  //换成对方下棋
+      newState.history = [...state.history, newState.board.map(row=>[...row])]
     }
     newState.nextPace = null
     newState.click = null
@@ -168,6 +170,7 @@ export function AIClick(state:gameState, action:Action<number[]|boolean>) {
   newState.board[y][x] = key
   newState.chessChange=[[y,x],[oldy,oldx],state.side]  //记录每一步棋子的变化
   newState.side = -newState.side  //换成对方下棋
+  newState.history = [...state.history, newState.board.map(row=>[...row])]
   if (state.mode == 4||state.mode == 12) {//若是提示模式时需要回退模式到正常游戏模式
     newState.mode = state.mode / 4
   }

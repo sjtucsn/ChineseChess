@@ -68,7 +68,7 @@ class ChessBoard extends React.Component<ChessBoardProps, any> {
           <AI treeDepth={this.props.difficulty} mode={this.props.mode} board={this.props.board} dispatch={this.props.dispatch} side={this.props.side}/>
         </div>
         <div className={buttonGropupStyle}>
-          <ButtonGroup mode={this.props.mode} side={this.props.side} showModel={this.props.showModel} dispatch={this.props.dispatch} />
+          <ButtonGroup mode={this.props.mode} side={this.props.side} showModel={this.props.showModel} history={this.props.history} dispatch={this.props.dispatch} />
         </div>
         <WinnerModel mode={this.props.mode} color={this.props.color} winner={this.props.winner} dispatch={this.props.dispatch} />
       </div>

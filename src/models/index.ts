@@ -1,7 +1,7 @@
 import * as Redux from 'redux'
 import {ChessProps} from '../components/chess/Chess'
 import {chessClick, boardClick, AIClick} from './chessClick'
-import {startClick, changeSide, onModelOK, onModelCancel, toggleAI, onGameOver, clearChess, showHint} from './buttonClick'
+import {startClick, changeSide, onModelOK, onModelCancel, toggleAI, onGameOver, clearChess, showHint, regretMove} from './buttonClick'
 
 export const PREFIX = 'chess'
 
@@ -17,6 +17,7 @@ export interface gameState {
   difficulty: number //游戏难度，即AI水平
   winner: number //胜者，1代表玩家胜，－1代表电脑胜
   clearChessMode: boolean //是否开启让子模式
+  history: Array<string[][]> //保存棋子历史值，用于悔棋
   dispatch: Redux.Dispatch<any>
 }
 
@@ -32,6 +33,7 @@ const initState: gameState = {
   difficulty: 2,
   winner: null,
   clearChessMode: false,
+  history: [],
   dispatch: null
 }
 
@@ -52,5 +54,6 @@ export default {
     onGameOver,
     clearChess, //让子模式
     showHint, //提示模式
+    regretMove, //悔棋
   }
 }
