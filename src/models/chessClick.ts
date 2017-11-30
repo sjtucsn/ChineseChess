@@ -68,6 +68,7 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side] //记录每一步棋子的变化
       newState.side = -newState.side  //换成对方下棋
       newState.history = [...state.history, newState.board.map(row=>[...row])]
+      newState.paceHistory = [...newState.paceHistory, newState.chessChange.join()]
     }
     newState.nextPace = null
     newState.click = null
@@ -80,6 +81,18 @@ export function chessClick(state:gameState, action:Action<ChessProps>) {
     const j = chess.position[1]
     newState.click = action.payload
     newState.nextPace = nextPace[chess.type](j, i, newState.board, chess.side) //记录该棋子可走的全部位置
+    //防止长将操作
+    const h = newState.paceHistory
+    const l = h.length
+    if (l>=8 && chess.name!='j0'&& chess.name!='J0' ) {
+      newState.nextPace = newState.nextPace.filter((pace)=>{
+        if (h[l-2]==h[l-6] && [[pace[1], pace[0]], [i, j], chess.side].join()==h[l-4]) {
+          return false
+        } else {
+          return true
+        }
+      })
+    }
   }
   return newState
 }
@@ -133,6 +146,7 @@ export function boardClick(state:gameState, action:Action<React.MouseEvent<HTMLD
       newState.chessChange=[[i,j],[oldi,oldj],state.click.side]  //记录每一步棋子的变化
       newState.side = -newState.side  //换成对方下棋
       newState.history = [...state.history, newState.board.map(row=>[...row])]
+      newState.paceHistory = [...newState.paceHistory, newState.chessChange.join()]
     }
     newState.nextPace = null
     newState.click = null
@@ -171,6 +185,7 @@ export function AIClick(state:gameState, action:Action<number[]|boolean>) {
   newState.chessChange=[[y,x],[oldy,oldx],state.side]  //记录每一步棋子的变化
   newState.side = -newState.side  //换成对方下棋
   newState.history = [...state.history, newState.board.map(row=>[...row])]
+  newState.paceHistory = [...newState.paceHistory, newState.chessChange.join()]
   if (state.mode == 4||state.mode == 12) {//若是提示模式时需要回退模式到正常游戏模式
     newState.mode = state.mode / 4
   }

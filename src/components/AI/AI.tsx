@@ -10,6 +10,7 @@ interface AIProps {
   side: number  //阵营
   dispatch: Redux.Dispatch<any>
   mode: number //游戏模式
+  paceHistory: string[] //处理长将问题
 }
 
 //用于点击棋子时提示可走位置的点组件
@@ -53,6 +54,18 @@ export default class AI extends React.Component<AIProps, any> {
     chessArray.forEach((chess)=>{
       //获取该棋子的所有着法
       let nextMove:number[][] = nextPace[chess.key[0].toLowerCase()](chess.x, chess.y, board, side)
+      //防止计算机长将操作
+      const h = this.props.paceHistory
+      const l = h.length
+      if (l>=8 && chess.key!='j0'&& chess.key!='J0') {
+        nextMove = nextMove.filter((pace)=>{
+          if (h[l-2]==h[l-6] && [[pace[1], pace[0]], [chess.y, chess.x]].join()==h[l-4].substr(0,7)) {
+            return false
+          } else {
+            return true
+          }
+        })
+      }
       nextMove.forEach((move)=>{
         let x=chess.x
         let y=chess.y

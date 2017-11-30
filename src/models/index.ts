@@ -18,6 +18,7 @@ export interface gameState {
   winner: number //胜者，1代表玩家胜，－1代表电脑胜
   clearChessMode: boolean //是否开启让子模式
   history: Array<string[][]> //保存棋子历史值，用于悔棋
+  paceHistory: string[] //用于检测是否长将
   dispatch: Redux.Dispatch<any>
 }
 
@@ -34,6 +35,7 @@ const initState: gameState = {
   winner: null,
   clearChessMode: false,
   history: [],
+  paceHistory: [],
   dispatch: null
 }
 

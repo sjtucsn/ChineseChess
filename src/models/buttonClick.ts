@@ -58,6 +58,7 @@ export function onModelOK(state:gameState, action:Action<gameOptions>) {
     [    ,    ,    ,    ,    ,    ,    ,    ,    ],
     ['c0','m0','x0','s0','j0','s1','x1','m1','c1']
   ]]:[]
+  newState.paceHistory = []
   return newState
 }
 

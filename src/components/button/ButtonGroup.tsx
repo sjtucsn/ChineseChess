@@ -39,7 +39,7 @@ export default class ButtonGroup extends React.Component<ButtonGroupProps, any> 
           <Button size='large' className={ButtonStyle} disabled={(this.props.mode==2)||(this.props.side==0)} onClick={()=>{this.props.dispatch(showHintAction())}}>提示</Button>
           {this.renderThirdButton()}
           <Button size='large' className={ButtonStyle} disabled={(this.props.side==0)||(this.props.mode==2)&&(Math.abs(this.props.side)==1)} onClick={()=>{this.props.dispatch(changeSideAction())}}>换边</Button>
-          <Button size='large' className={ButtonStyle} disabled={(this.props.side==0)||(this.props.mode==2)&&(Math.abs(this.props.side)==1)} onClick={()=>{this.props.dispatch(clearChessAction())}}>让子</Button>
+          <Button size='large' className={ButtonStyle} disabled={(this.props.side==0)||(this.props.mode==2)} onClick={()=>{this.props.dispatch(clearChessAction())}}>让子</Button>
         </div>
         <StartModel visible={this.props.showModel} dispatch={this.props.dispatch} />
       </div>
