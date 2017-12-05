@@ -19,15 +19,6 @@ function RouterConfig({ history, app }) {
         });
       },
     },
-    {
-      path: '/hello',
-      name: 'Hello',
-      getComponent(nextState, cb) {
-        require.ensure([], (require) => {
-          cb(null, require('./routes/hello'));
-        });
-      },
-    },
   ];
 
   return <Router history={history} routes={routes} />;
