@@ -28,7 +28,7 @@ export default class AI extends React.Component<AIProps, any> {
         }
       })
     })
-    val+=Math.floor(Math.random() * 10)  //让AI走棋增加随机元素
+    val+=Math.round(Math.random() * 20 - 10)  //让AI走棋增加随机性
     this.number++
     return val*side //最后计算的时候都是按最大的算，因此黑方需要乘以-1
   }
@@ -146,22 +146,18 @@ export default class AI extends React.Component<AIProps, any> {
     let initTime = new Date().getTime();
     this.number = 0
     //返回计算生成的最佳着法
-    let result = this.getAlphaBeta(-99999 ,99999, depth, this.arrayClone(this.props.board), this.props.side) as {oldx:number, oldy:number, key:string, x:number, y:number, value:number}
-    if (result&&result.value!=-8888) {
-      let chess = result.key;
-      var nowTime= new Date().getTime();
-      const log ='<h3>AI搜索结果：</h3>最佳着法：'+
-                      [result.oldx, result.oldy, result.x, result.y]+
-                      '<br />搜索深度：'+depth+'<br />搜索分支：'+
-                      this.number+'个 <br />最佳着法评估：'+
-                      result.value+'分'+
-                      ' <br />搜索用时：'+
-                      (nowTime-initTime)+'毫秒'
-      console.log(log)
-      return [result.oldx, result.oldy, result.x, result.y]
-    } else {
-      return false;	
-    }
+    let result = this.getAlphaBeta(-9999 ,9999, depth, this.arrayClone(this.props.board), this.props.side) as {oldx:number, oldy:number, key:string, x:number, y:number, value:number}
+    let chess = result.key;
+    var nowTime= new Date().getTime();
+    const log ='AI搜索结果：最佳着法：'+
+                    [result.oldx, result.oldy, result.x, result.y]+
+                    ' 搜索深度：'+depth+'搜索分支：'+
+                    this.number+'个 最佳着法评估：'+
+                    result.value+'分'+
+                    ' 搜索用时：'+
+                    (nowTime-initTime)+'毫秒'
+    console.log(log)
+    return [result.oldx, result.oldy, result.x, result.y]
   }
 
   componentDidUpdate() {

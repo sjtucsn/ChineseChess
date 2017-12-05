@@ -164,10 +164,6 @@ export function AIClickAction(move: number[]|boolean) {
 export function AIClick(state:gameState, action:Action<number[]|boolean>) {
   const newState = {...state}
   const move = action.payload
-  if (!move) { //电脑无棋可下，则电脑输
-    newState.winner = -state.side 
-    newState.side = 0
-  }
   if (move[0]===undefined) { //当机机对弈暂停时需要注意的问题，防止下一步棋为空
     return newState
   }
@@ -176,8 +172,11 @@ export function AIClick(state:gameState, action:Action<number[]|boolean>) {
   const x = move[2]  //获取棋子新位置
   const y = move[3]
   const key = newState.board[oldy][oldx]  //获取AI要走的棋子
-  if (state.board[y][x]=='j0') { //玩家输
+  if (state.board[y][x]=='j0') { //近方输
     newState.winner = -1
+    newState.side = 0
+  } else if (state.board[y][x]=='J0') { //远方输
+    newState.winner = 1
     newState.side = 0
   }
   delete newState.board[oldy][oldx]  //更新棋盘
