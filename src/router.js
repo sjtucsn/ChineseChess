@@ -1,13 +1,36 @@
 import React from 'react';
-import { Router, Route } from 'dva/router';
-import IndexPage from './routes/IndexPage';
+import { Router } from 'dva/router';
 
-function RouterConfig({ history }) {
-  return (
-    <Router history={history}>
-      <Route path="/" component={IndexPage} />
-    </Router>
-  );
+const registerModel = (app, model) => {
+  if (!(app._models.filter(m => m.namespace === model.namespace).length === 1)) {
+    app.model(model);
+  }
+};
+
+function RouterConfig({ history, app }) {
+  const routes = [
+    {
+      path: '/',
+      name: 'Chess',
+      getComponent(nextState, cb) {
+        require.ensure([], (require) => {
+          registerModel(app, require('./models/index').default);
+          cb(null, require('./routes/Chessboard'));
+        });
+      },
+    },
+    {
+      path: '/hello',
+      name: 'Hello',
+      getComponent(nextState, cb) {
+        require.ensure([], (require) => {
+          cb(null, require('./routes/hello'));
+        });
+      },
+    },
+  ];
+
+  return <Router history={history} routes={routes} />;
 }
 
 export default RouterConfig;
